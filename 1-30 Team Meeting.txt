@@ -1,0 +1,30 @@
+Completed First Meeting form
+Discussed meeting availability
+Thinking about programming languages we have to learn: Javascript, Python
+Gund Gallery Meeting times:
+	4-5 on Monday (missing Jenny)
+Tuesdays: 4-5 (missing Ryan), 1:00-2:30 (missing Lucas and Zach), 11:00-12:00
+Downloading Atom (and Putty)
+
+
+Questions for Gund Gallery:
+	How much control will we have over the project?
+	What is their big idea of what they want? What would be the anticipated successful outcome of this project?
+		What is the minimum of what they want?
+	What media do they want the project to be on?
+		Should it be interactive?
+			If it is interactive, how responsive should it be to user inputs?
+				What decisions would the audience make while using the program? (whether in input -clicking, sliding- or mentally)
+	How does it fit in the bigger exhibition?
+	Audience Questions: Who will use it? Why would they use it? What would they gain from it?
+		What is the relationship of the gallery to the audience?
+		How much background information does the audience already have?
+		What should change in the audience after they use this educational tool? (successful outcome)
+	What data is available? What story do you see in the data?
+
+
+
+Plans for Next Meeting:
+	Work on Github
+	Talk about rapid development techniques
+	More questions for Gund Gallery?
