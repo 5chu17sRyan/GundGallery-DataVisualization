@@ -25,6 +25,8 @@ Questions for Gund Gallery:
 
 
 Plans for Next Meeting:
-	Work on Github
+	Work on Github - learned to make changes
 	Talk about rapid development techniques
 	More questions for Gund Gallery?
+	
+
