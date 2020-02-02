@@ -1,4 +1,9 @@
 Git Test
+Lucas's changes
+HAHAHA
 Jenny's Changes!
+<<<<<<< HEAD
 Jenny's New Changes!
 Jenny's New New Changes!
+=======
+>>>>>>> fa823357696ca9b02248ff4db86a152768dd8501
