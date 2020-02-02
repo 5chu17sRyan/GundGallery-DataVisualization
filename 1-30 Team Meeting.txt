@@ -4,7 +4,7 @@ Thinking about programming languages we have to learn: Javascript, Python
 Gund Gallery Meeting times:
 	4-5 on Monday (missing Jenny)
 Tuesdays: 4-5 (missing Ryan), 1:00-2:30 (missing Lucas and Zach), 11:00-12:00
-Downloading Atom (and Putty)
+Downloading Atom (and Putty
 
 
 Questions for Gund Gallery:
