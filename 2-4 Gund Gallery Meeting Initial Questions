@@ -1,0 +1,66 @@
+Abstract, Big-Picture Goal:
+What is their big idea of what you want? What would be the anticipated successful outcome of this project? Visualization released to the public; excited about the exhibition and the process of the exhibition (marketing and educational)
+What is the minimum of what you want?
+Scope: static - interactive (multi-user or single-user) - VR/AR
+How does it fit in the bigger exhibition? What is the context?
+Release before the exhibition (before Spring 2021): release on the website, social media; use Parsons as a jumping off point
+Section for educational materials
+Beginning or ending or a blackbox space; embedded into the exhibition
+Seating and books
+iPads, smartTV screens, projector
+How many users? Can users see other user decisions?
+Could you tell a narrative of how you envision a person using this software?
+Are they coming from a different exhibit? Or plan to visit some specific exhibit next?
+How thematically tied to surrounding exhibits does this software need to be?
+
+Role of Developers:
+How much control will we have over the project?
+A lot.
+
+Audience:
+Audience Questions: Who will use it? Why would they use it? What would they gain from it? Online visitors (campuses across the country), Knox County, usually adults, local Ohions, sometimes other academic institutions. Widest??
+What is the relationship of the gallery to the audience? Usually the people from Kenyon and the surrounding communities but also people online. Maybe available to people of different ages.
+How much background information does the audience already have?
+What should change in the audience after they use this educational tool? (successful outcome)
+Awareness of local Kenyon environment (global climate crisis with Kenyon)
+Sensitivity for local environment
+Understand local changes or even global influence
+Hyperlocal focus on Kenyon as a starting point for the audience
+Community-building
+
+Logistics:
+What media do they want the project to be on? Web-based
+Should it be interactive? Yes, preferably
+If it is interactive, how responsive should it be to user inputs?
+What decisions would the audience make while using the program? (whether in input -clicking, sliding- or mentally)
+-guided or exploratory?
+-either, open to new tools
+What is their first interaction?
+What do they have to do to start interacting? Look? Touch?
+What data is available? What story do you see in the data?
+Talk to David Heithaus; Carbon sequestration data
+Contact David (Kenyon Canopy)
+Supplemental information about trees at Kenyon: Special Collections (aerial photographs)
+Need some research to gain more data and functions to translate all the data we have to make the interactive precise
+Constraints:
+Lack of long-term, complete, historic data
+Must be campus-based
+Web-based
+Uncertainty about medium (projector)
+Multi-users
+
+
+
+-look at examples of data visualizations
+Shiny (rstudio) - https://shiny.rstudio.com/gallery/
+D3 - https://github.com/d3/d3/wiki/Gallery
+https://parsons.nyc/met-museum-2019/
+https://artmuseum.williams.edu/pink-art/
+Tableau - https://public.tableau.com/en-us/gallery/?tab=viz-of-the-day&type=viz-of-the-day
+
+
+Ideas:
+-augmented or virtual reality
+-extra environmental tree data
+-ghost trees (where they used to be)
+-participatory experience
