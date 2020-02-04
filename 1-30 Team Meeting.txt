@@ -28,3 +28,4 @@ Plans for Next Meeting:
 	Work on Github
 	Talk about rapid development techniques
 	More questions for Gund Gallery?
+	Try something in the terminal
