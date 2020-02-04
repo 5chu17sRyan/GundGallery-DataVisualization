@@ -1,0 +1,21 @@
+Information about the organization:
+  Kenyon Gund Gallary: a community art museum on Kenyon’s campus for Knox County Residents.
+List of people you met with:
+  Caroline Culbert (Digital Experience and Social Media) and Jodi Kovach (Academic Curator)
+A list of the stakeholders:
+  Caroline Culbert, Jodi Kovach
+An overview of the goals of the project:
+  An educational tool, in the context of the Art of Trees exhibition (Spring 2021), that increases (within the user)
+    Awareness of local Kenyon environment (global climate crisis with Kenyon)
+    Sensitivity for the local environment
+    Understanding local changes or even global influence
+    Hyperlocal focus on Kenyon as a starting point for the audience
+    Community-building
+A description of major functions and important project attributes:
+  Potentially Web-based.
+  Potentially interactive interface to allow cutting & planting trees
+  Potentially future projection & history of environmental impact. (Interactive)
+  Stakeholders are also open to static data visualizations, multi-user interactive interface, and VR/AR visualizations.
+A description of the data being stored and processed:
+  David Heithaus’s (Kenyon Canopy) data on Kenyon’s tree loss
+  Possibility of campus photos in Kenyon archive
