@@ -1,0 +1,23 @@
+AGENDA
+	1. Requirements from Gund Gallery
+	2. How we will come up with our own requirements
+		a. Check out data visualizations
+
+Shiny (rstudio) - https://shiny.rstudio.com/gallery/
+	Simulation - https://marcus.shinyapps.io/bus_simulator/
+	Environmental Map-based Data - https://udwq.shinyapps.io/lakeprofiledashboard/
+	Dataset exploration - https://nardus.shinyapps.io/soilprofile/
+           https://shiny.rstudio.com/gallery/movie-explorer.html
+	Simple - https://shiny.rstudio.com/gallery/telephones-by-region.html
+D3 - https://github.com/d3/d3/wiki/Gallery
+	Bubble Map - https://observablehq.com/@d3/bubble-map
+Crossfilter - http://square.github.io/crossfilter/
+These Shiny and D3 examples come with the code used to make them. So, if we want to use one of these frameworks, it will be relatively easy.
+https://parsons.nyc/met-museum-2019/
+https://artmuseum.williams.edu/pink-art/
+Tableau - https://public.tableau.com/en-us/gallery/?tab=viz-of-the-day&type=viz-of-the-day
+	Simple, effective, and pretty static data-visualizations.
+
+		b. What data we have and plan to have
+			i. We think we only have raw data on diameter at breast height and species, everything else comes from formulas with the diameter and species as inputs.
+	3. Establish meeting time this week to work on the requirements document and a meeting time to meet with Skon
