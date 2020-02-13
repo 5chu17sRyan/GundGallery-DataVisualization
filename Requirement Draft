@@ -39,12 +39,8 @@ connect it to the larger issue of global warming. In addition, it should
 connect tree loss to their own personal relationships with trees. In essence,
 when the user learns facts about tree loss, they need to make a connection to
 the big picture (climate change) and the personal picture (their own
-relationship).
+relationship). In order to do so, the trees should be personalized and the experience should be gamified.
 
-Conceptual map:
-Tree to personal feelings
-Tree to users' awareness
-Tree to climate change
 
 Logistically, the user should be able to physically interact with the software
 and the equipment provided by the Gund Gallery.
@@ -53,32 +49,6 @@ Non-functional requirements:
 The system needs to use Kenyon tree loss data (March 2018-December 2019). It
 needs to be accessed through Gund Gallery’s website, used in areas with dim
 lighting, and could be potentially shareable on social media.
-
-Needs to use Kenyon tree data
-Needs to be accessed through Gund Gallery’s website
-Needs to be able to be used in areas with dim lighting
-Needs to be shareable with social media (tentative)
-Storyboard and diagram sketches of the webpage
-
-Some general expectations on what the services will provide for the user:
-Needs to excite users for the Gund Gallery Art of Trees exhibition
-Needs to provide users with an awareness and sensitivity for the local
-environment and its relationship with global warming
-Should be community building
-Needs to connect the audience's common senses and experiences with trees and
-their influence on the local and global environment
-A part of the website can be interactive
-Users should be able to physically interact with the software and the equipment
-provided by the Gund Gallery
-
-Personalizing the trees
-Make trees seem like our counterparts (aka the loss of trees is equal to the
-loss of something more personal) Deleting individual trees provides a greater
-attachment
-Gamifying the experience keeps the attention of users longer and prompts them to
- make decisions that matter and have consequences. Gamification: some sort of
- motivation system (points or so forth) to encourage exploration
-
 
 System Architecture:
 
