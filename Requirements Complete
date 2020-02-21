@@ -1,0 +1,315 @@
+Software Requirements
+
+Jenny Tie, Lucas Lu, Zach Wang, Ryan Schultz
+
+
+Preface
+
+This draft summarizes the basic features and requirements of the website and
+some information about the hardware requirement and the equipment we may need to
+use for Kenyon Canopy data visualization.
+
+
+Introduction
+
+The Gund Gallery has asked for a web-based interactive application that would be
+released in anticipation of the Spring 2021 Art of Trees exhibition. The system
+would work both as a marketing device to increase the excitement for the
+exhibition and an educational tool for users to understand the impact of tree
+loss on Kenyon and beyond.
+
+The user of the system should be able to interact with the system in order to
+make decisions that would reveal some aspects of tree loss and its
+environmental impact.
+
+
+Glossary
+
+1. R
+
+  a. R is a programming language primarily used for statistical computing.
+
+2. Shiny
+
+  a. Shiny is package within R that extends the capabilities of the R
+  programming language to be able to develop interactive web-based data
+  visualizations
+
+3. Matrix
+
+  a. A multi-dimensional table-like structure that stores data
+
+  b. Fig.1 (Image from Wikipedia)
+
+4. Vector
+
+  a. Essentially a list of data (could be thought of as a one-dimensional
+  matrix)
+
+5. Class
+
+  a. A programming abstraction for real world things
+
+  b. For example, there may be a class of Doors so within your program you can
+  create virtual abstractions for any type of door.
+
+6. Modular
+
+  a. A software design technique that emphasizes separating the functionality
+  of a program into independent, interchangeable modules.
+
+7. RAIL Model
+
+  a. A measure of web page performance introduced by Google that sets
+  performance standards to ensure a good user experience.
+
+8. Robust
+
+  a. A software development error-handling technique that attempts to keep the
+  software running even when errors are encountered.
+
+
+User Requirements Definition
+
+Functional Requirements:
+
+The general expectations of the system are three-pronged: marketing, education,
+and interactivity. For the marketing aspect, the functionalities and outline of
+the system need to be interesting for viewers at the Gund Gallery Art of Trees
+exhibition. For the educational component, the software should give the user a
+concrete awareness and literacy of the effect of tree loss in local
+environments, and give them the means to connect it to the larger issue of
+global warming. Additionally, the viewer should be able to interact with the
+software by personalizing their desired input.
+
+More specifically, the software  is expected to be a simulation of tree loss
+that the user controls. The user needs to control the number of trees in the
+system and the software needs to calculate the ecological effects that removing
+or adding trees has on the local environment.
+
+Non-functional requirements:
+
+The system needs to use Kenyon tree loss data (March 2018-December 2019). It
+needs to be accessed through Gund Gallery’s website, used in areas with dim
+lighting, and could be potentially shareable on social media. Another goal of
+this project is to make trees seem like our counterparts (aka the loss of trees
+is equal to the loss of something more personal) Deleting individual trees
+provides a greater attachment
+Gamifying the experience keeps the attention of users longer and prompts them
+to make decisions that matter and have consequences. Gamification: some sort of
+motivation system (points or so forth) to encourage exploration
+
+
+System Architecture
+
+A high-level overview of the system architecture
+
+Fig.2
+
+
+System Requirements Specification
+
+Program Organization
+
+For our program we are tentatively planning for three different subsystems: a
+user interface subsystem, a data processing subsystem, and a data management
+subsystem. The user interface subsystem is responsible for giving the user
+options to change inputs and displaying outputs to the user. In our first
+version, the user will have a slider to select the number of trees in the
+environment and they will be shown the output based on the change in trees
+through a bar graph. Our data processing subsystem is responsible for taking
+the input data from the user and, using the tree data we are provided with,
+calculating the environmental impact based on the change in trees. We may or
+may not need a subsystem for data management. Normally, this would entail
+searching, retrieving, and editing data held within a database or data file.
+However, since R is a programming language made for statistical computing, it
+is very adept at managing data without us having to write custom functions to
+search, retrieve, and edit the data.
+
+Major Classes
+
+The programming language we are using, R, does not support classes in the
+traditional sense. However, we could still implement abstract data types. An
+abstract data type works very similarly to a class in the sense it serves as an
+abstraction for some real world entity. Classes have a bit more flexibility
+that we will have to do without. Currently we can create abstract data types
+for the ecosystem by having a vector that contains the trees within the
+ecosystem. Each tree will itself be an abstract data type. Functions in our
+program that would normally be contained in our classes will have to be stored
+outside of classes. Our program is small enough that this lack of information
+hiding shouldn’t increase complexity too much.
+
+Data Design
+
+We plan on storing our data (data on 177 trees) in a single Excel file. This
+file will likely be imported directly into R for easy manipulation. We do not
+plan on storing any user data or input. Input does not need to be stored
+because we do not plan on collecting the history of user choices or allowing
+them to undo their choices. There is no need to collect user data because we do
+not plan on having user sign-in or needing to track if the user has recently
+visited the webpage.
+
+Business Rules
+
+There are no expected business rules at this time
+
+User Interface Design
+
+We expect our user interface to repeatedly change throughout the lifecycle of
+this program as we develop new versions. Because of the high likelihood of
+change our user interface needs to be modularized which will allow us to
+substitute change easier. Our user interface plans to have two main components:
+a user input component and a component that shows output. In the initial
+version, user input is controlled by a slider which allows users to select the
+number of trees in the system. Output will be a bar chart of several factors
+that measure the health of the ecosystem so users can see the impact of the
+change in trees on the environment. In future versions, input will be changed
+from a single slider to hand deleting trees by clicking on trees located on a
+virtual map of the Kenyon grounds (like the one in Google map). Output will be
+changed from a bar chart to a heat map of the Kenyon ground where as trees are
+deleted the map will change color from green to red, showcasing the negative
+impact on the ecosystem.
+
+Resource Management
+
+We expect our program to be small enough to not have scarce resources
+
+Security
+
+Our only external interface is through user input controlled by a slider or by
+deleting trees from a map. We have not identified any threats that would
+require us to write secure code that would come from this external interface.
+
+Performance
+
+To create the best user experience we would like to conform to the RAIL model.
+The RAIL model is a specific standard for performance that is centered on
+creating a better user experience. This includes attempting to respond to user
+input in under 100ms and loading any interactive content in under 5,000ms.
+
+Scalability
+
+The system is not expected to grow and scalability is not an issue.
+
+Interoperability
+
+We do not expect to share resources with other software and hardware.
+
+Input/Output
+
+We do not have any specific plans for a reading scheme or a plan for the level
+at which input and output errors are detected.
+
+Error Processing
+
+Error processing is not a high priority goal for this project. However, errors
+will inevitably occur during the lifecycle of our program so we will plan to
+follow the following guidelines. Our error processing will attempt to be
+corrective. As we will try to change errors in things such as input by
+defaulting to a standard input. Our input is simple enough that if we find a
+value that doesn’t make sense we can correct the error by resetting the input to
+something that makes sense. Our error processing will also be active. Errors
+will be actively searched for by checking input and output as it comes in and
+is sent out, respectively. Our error messages sent to the user will be
+standardized to minimize complexity of the user experience when users come
+across errors. Errors will be dealt with at the point of detection. Errors will
+not be sent to a seperate location to be dealt with. Similarly, all
+subsystems will be responsible for validating their own input and output
+data. We do not have any plans for error propagation.
+
+Fault Tolerance
+
+We do not have any complex plans for fault tolerance. If an error occurs that
+stops the functioning of the program, the program will have to be restarted.
+
+Sustainability
+
+If time allows sustainable, “green” software techniques may be implemented.
+However, the system will not be planned to be sustainable because it is outside
+the scope of the project and our software is reasonably small so it should not
+contribute to a large carbon footprint.
+
+Architectural Feasibility
+
+We think that this system is feasible.
+
+Over engineering
+
+We are not planning for the program to be anymore than minimally robust.
+
+Reuse Decisions
+
+We will be reusing the frameworks for two different shiny applications and
+attempting to integrate the two of them:
+https://github.com/marcusyoung/beat_the_trend,
+https://github.com/utah-dwq/LakeProfileDashboard.
+
+
+System Models
+
+Fig.3 (Activity Diagram for the System)
+
+Fig.4 (Event-driven Model for the System)
+
+Fig.5 (Data-driven Model for the System)
+
+
+System Evolution
+
+We identified 3 versions of the software that we planned to attempt: version 1
+(V1), version 2 (V2), and version 3 (V3). V1 is a basic simulation that is
+similar and less complex as the first example
+(https://marcus.shinyapps.io/bus_simulator/) under the Appendices. To build V1,
+we will set up data that average the quantifiable features of all the trees,
+meaning that we will summarize the data from Kenyon Canopy and consider these
+177 trees as the same (of course this action will reduce accuracy). There will
+be a slider which allows users to select the number of trees in the system and
+a bar chart of several factors that measure the health of the ecosystem.
+According to our plan, V1 will be accomplished on April 4th. Starting from V1,
+V2 will be developed by implementing addition to V1. The webpage will keep the
+single slider from V1 and add a virtual map of the Kenyon grounds where users
+can delete trees by clicking on trees located on the map. V2 is planned to be
+completed on April 25th. The final version, V3, will have all the features from
+V2 and the map will be further changed in order to display a heat grid for
+ecological impact, ranging from green to red, which will make the visualization
+more direct. The final version is planned to be done by May 3rd.
+
+
+Appendices
+
+Component for the sliders (reference):
+
+Sliders: We plan to utilize the slider app from the Shiny library and customize
+it to our needs. We will create slider controls through Shiny’s pre-written
+code. The server side of the Slider application creates a data frame containing
+all of the input values and then renders it as an HTML table.
+
+Fig.6
+
+Component for the map (reference):
+
+We plan to download a map of Kenyon from Google and display it using R’s
+leaflet library for visual output.
+
+Fig.7
+
+
+Index
+
+Preface------------------------------------------------------------------------1
+
+Introduction-------------------------------------------------------------------1
+
+Glossary-----------------------------------------------------------------------1
+
+User Requirement Definition----------------------------------------------------2
+
+System Architecture------------------------------------------------------------2
+
+System Requirement Specification-----------------------------------------------3
+
+System Models------------------------------------------------------------------6
+
+System Evolution---------------------------------------------------------------6
+
+Appendices---------------------------------------------------------------------7
