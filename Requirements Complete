@@ -206,17 +206,18 @@ User Interface Design
 We expect our user interface to repeatedly change throughout the lifecycle of
 this program as we develop new versions. Because of the high likelihood of
 change our user interface needs to be modularized which will allow us to
-substitute change easier. Our user interface plans to have two main components:
-a user input component and a component that shows output. In the initial
-version, user input is controlled by a slider which allows users to select the
-number of trees in the system. Output will be a bar chart of several factors
-that measure the health of the ecosystem so users can see the impact of the
-change in trees on the environment. In future versions, input will be changed
-from a single slider to hand deleting trees by clicking on trees located on a
-virtual map of the Kenyon grounds (like the one in Google map). Output will be
-changed from a bar chart to a heat map of the Kenyon ground where as trees are
-deleted the map will change color from green to red, showcasing the negative
-impact on the ecosystem.
+substitute change easier. Our user interface for version 1 plans to have two
+main components: one user input component and a component that shows output.
+User input is controlled by two sliders which allow users to select the number
+of trees in the system and the average diameter of the breast height of the
+trees. Output will be an “ecosystem health score” that corresponds to those
+changes, so users can see the impact of the change in trees on the environment.
+The ecosystem health score will range from 0 to 100. In future versions, input
+will be changed from two sliders to hand deleting trees by clicking on trees
+located on a virtual map of the Kenyon grounds (like the one in Google map).
+Output will include a heat map of the Kenyon ground where as trees are deleted,
+the map will change color from green to red, showcasing the negative impact on
+the ecosystem.
 
 Resource Management
 
