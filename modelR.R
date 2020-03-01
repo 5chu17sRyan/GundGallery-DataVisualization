@@ -7,7 +7,7 @@ model = lm(logBene~logCBH)
 summary(model)
 
 benefit_from_CBH <-function(CBH){
-  benefit <- -0.23102 + 0.80001 * CBH
+  benefit <- exp(-0.23102 + 0.80001 * log(CBH))
   return (benefit)
 }
-
+benefit_from_CBH(10)
