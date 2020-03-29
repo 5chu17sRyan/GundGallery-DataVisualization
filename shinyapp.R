@@ -15,6 +15,10 @@ ui <- fluidPage(
               max = 5, 
               step = 0.01),
   textOutput("stats")
+  #output plot 
+    mainPanel(
+      plotOutput(outputId="hist")
+    )
 )
 server <- function(input, output){
   output$stats <- renderText({paste(
