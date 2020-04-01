@@ -1,0 +1,174 @@
+Software Architecture
+
+Jenny Tie, Lucas Lu, Zach Wang, Ryan Schultz
+
+Overview/Contents:
+
+This software architecture document consists of the following subsections:
+
+Introduction
+  Purpose
+  Scope
+  Definitions, Acronyms, and Definitions
+  References
+Architectural Representation
+  Architecture Goals and Constraints
+  Objectives
+  Constraints
+Architectural Views
+  Use-case view
+  Development View
+  Process View
+  Logical view
+  Physical View:
+Change Cases
+Size and Performance
+  Expected Lines of Code
+  Expected Effort
+  Expected Schedule
+Quality
+  Resource Management
+  Security
+  Performance
+  Scalability
+  Interoperability
+  Fault Tolerance
+  Sustainability
+  Over-engineering
+
+
+Introduction
+
+Purpose: This document provides an architectural overview for Version 1 of the Tree Loss Data Visualization Project for the Graham Gund Gallery’s 2021 exhibition, Art of Trees. This document is intended to capture and convey the significant architectural decisions which have been made in designing and building the system. 
+
+The structure of this document is based on the “4+1” model view of architecture, covering the logical, development, process, and physical view of the system, alongside examples of use cases.
+
+Scope: The scope of this document is to depict the architecture for Version 1 of the Tree Loss Data Visualization Project. It will be a single-page application.
+
+Definitions, Acronyms, and Definitions:
+MVC (Model-View-Controller): a software design pattern that divides the related program logic into the model, view, and controller elements, used for developing user interfaces
+UML (Unified Modeling Language): a modelling language to visualize the design of a system.
+
+References:
+Guideline to Software Architecture Document
+Software Engineering, Tenth Edition by Ian Sommerville
+Another Architecture Example
+Software Architecture Fact Sheet from Carnegie Mellon University
+Detailed Explanation of shinyapps.io Server Architecture
+
+Architectural Representation
+
+As mentioned in the introduction, the architecture views in this document are based on the “4+1” model view of architecture. In detail, these views are:
+
+Use-Case View:
+Audience: all stakeholders, including end-users
+Area: describes the set of scenarios when the system is in use
+Model used: Use-Case Model
+Logical View:
+Audience: end-users
+Area: concerns about the functionality that the system provides to end-users
+Model used: MVC
+Development View:
+Audience: programmers
+Area: illustrates a system from a programmer's perspective and is concerned with software management. This view is also known as the implementation view.
+Model used: Component Diagram
+Process View:
+Audience: system engineers
+Area: deals with the dynamic aspects of the system, explains the system processes and how they communicate, and focuses on the run time behavior of the system. The process view addresses concurrency, distribution, integrator, performance, and scalability, etc.
+Model used: Activity Diagram
+Physical View:
+Audience: system engineers
+Area: depicts the system from a system engineer's point of view. It is concerned with the topology of software components on the physical layer as well as the physical connections between these components. This view is also known as the deployment view.
+Model used: Deployment Diagram
+
+Architecture Goals and Constraints
+
+The software architecture has been designed with these objectives in mind:
+To educate users on the impact of trees on Kenyon ecosystem by simulating tree loss on campus based on local data
+To connect users personally with trees by incorporating an interactive, decision-making component, where they decide on the amount of tree loss by manipulating a slider
+To help users understand the relationship between trees, their sizes, and how their loss impacts the ecosystem by visually modelling a relationship between the number of trees, their sizes, and an ecosystem health score that is derived from the environmental factors listed in the data
+
+Constraints:
+Technical platform: the software will be deployed on a web-server affiliated with Kenyon or Gund Gallery or shinyapps.io, a free to use server maintained by RStudio.
+Performance: As an interactive, user-centric application, a high level of performance is critical. The system should respond to user input in under 100ms and load any interactive content in under 5,000ms.
+Projected in areas with low visibility: the software may be projected in dim areas within the gallery. To maximize readability in such circumstances, we plan for a simple, minimalist interface.
+
+
+Architectural Views
+
+Use-case view
+Figure 1.1; Use case view of the interactions users will have with our program. Note that output of total ecosystem benefit and detailed ecosystem data can only be viewed after the user has selected their inputs.
+
+Development View
+
+
+Figure 1.2: The development view of our system breaks down what functionality will need to be implemented and in which subsystems. The user interface subsystem is colored in pink and the server subsystem is in orange.
+
+Process View
+
+
+Figure 1.3: A process view of the system architecture. Gives a detailed view of the sequence of events that occurs in the program. The sequence of events starts at the filled-in circle and ends at the filled-in circle surrounded by a ring. Arrows show the direction sequence moves in. The black bar signifies that both prior events must be completed before moving forward. The dark pink blocks are for processes that control the interactions between the user interface and server subsystems. These processes are handled automatically within Shiny.
+
+Logical view
+
+Our system architecture is mainly based on an MVC design. However, Shiny applications automatically manage the model part of the system. After defining what UI elements obtain data, as the user changes those elements, their data is automatically stored by Shiny as a list of inputs. The output is automatically sent from the server program to the user interface by defining a list of outputs. Shiny is structured so every application has a “ui” function and a “server” function. The server function takes “input” and “output” as its parameters. As we mentioned, the input is automatically stored from the UI elements that are tagged as input. To send output from the server to the UI the parameter “output” is filled with your outputs. The “server” function acts as a controller in this context. The “ui” function acts as the view. Within the controller, we are interfacing with the view by obtaining input and sending output. We can also think of our controller as interfacing with a sub-system which transforms the input into our outputs using statistical models generated separately from the program (See Figure 1.4).
+
+Figure 1.4
+
+Physical View
+
+We can either host our application on a web-server affiliated with Kenyon or Gund Gallery or we can host it on shinyapps.io, a free to use server maintained by RStudio. Shinyapps.io involves less risk as it is designed for a higher level of abstraction - less is needed to know about the server in order to use it. The server architecture for shinyapps.io is shown in Figure 1.5. Users access our application through a session of R. As an instance of our application exceeds the capacity of the number of R sessions it can run, more instances may be opened.
+
+
+Figure 1.5
+
+
+Change Cases
+
+Version 1: we will set up data that average the quantifiable features of all the trees, meaning that we will summarize the data from Kenyon Canopy and consider these trees as the same (of course this action will reduce accuracy). The user can control two sliders. One allows users to select the number of trees from 0-108, the other allows users to select the diameter at breast height (DBH) of the trees. After they select the number of trees and the DBH of those trees, the interface will output an “ecosystem health score” that corresponds to those changes.
+Figure 1.6: Version 1
+
+Version 2: it will be developed by implementing addition and simplification to V1. The two sliders will be removed from the website. The webpage will still include the colored halo with the ecosystem health score in it from V1 and we will add a virtual map of the Kenyon grounds where users can delete trees located on the map, where trees will be represented by dots. To be more specific, users can click any individual tree on the map and then at a corner of the webpage, the interface will exhibit all the information of the tree with a delete button under it, and by clicking the delete button, the dot that represents that tree will disappear on the map.
+
+
+
+
+Figure 1.7: Version 2
+
+
+Version 3: it will have all the features from V2 and the map will be further changed in order to display a heat grid for ecological impact, ranging from green to red, which will make the visualization more direct.
+
+Size and Performance
+
+Expected Lines of Code
+Version 1 - 900
+Version 2 - 1700
+Version 3 - 2000
+Expected Effort
+Version 1 - 0.65 man-months
+Version 2 - 0.90 man-months
+Version 3 - 1.00 man-months
+Expected Schedule
+Version 1 - 0.90 months
+Version 2 - 1.70 months
+Version 3 - 1.95 months
+
+
+Quality
+
+Resource Management
+We expect our program to be small enough to not have scarce resources
+Security
+Our only external interface is through user input controlled by two sliders or by deleting trees from a map. We have not identified any threats that would require us to write secure code that would come from this external interface.
+Performance
+To create the best user experience we would like to conform to the RAIL model. The RAIL model is a specific standard for performance that is centered on creating a better user experience. This includes attempting to respond to user input in under 100ms and loading any interactive content in under 5,000ms.
+Scalability
+The system is not expected to grow and scalability is not an issue.
+Interoperability
+We do not expect to share resources with other software and hardware.
+Fault Tolerance
+We do not have any complex plans for fault tolerance. If an error occurs that stops the functioning of the program, the program will have to be restarted.
+Sustainability
+If time allows sustainable, “green” software techniques may be implemented. However, the system will not be planned to be sustainable because it is outside the scope of the project and our software is reasonably small so it should not contribute to a large carbon footprint.
+Over-engineering
+We are not planning for the program to be any more than minimally robust.
