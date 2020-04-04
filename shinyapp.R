@@ -15,17 +15,16 @@ ui <- fluidPage(
               max = 5,
               step = 0.01),
   textOutput("stats")
-  #output plot
-    mainPanel(
-      plotOutput(outputId="hist")
-    )
+  # #output plot
+  #   mainPanel(
+  #     plotOutput(outputId="hist")
+  #   )
 )
 server <- function(input, output){
-  output$stats <- renderText({paste(
-    #Consider creating another function that calculates total benefit from the diameter.
-    #It would make the following line of code more readable. "Your total benefit is ", totalBenefit()
-    #In this calculation you can multiply DBH by pi, pass it through the benefit_from_CBH function, multiply by numTree, and then divide by the max value to turn it into a percent.
-    "Your total benefit is $", round(input$numTree * benefit_from_CBH(pi * input$DBH), digit = 1)
+  output$stats <- renderText({
+    benefit <- input$numTree * benefit_from_CBH(pi * input$DBH)
+    paste(
+    "The system's health score is: ", health_score(benefit)
   )})
 
   output$hist <- renderPlot({hist(rnorm(100))})
