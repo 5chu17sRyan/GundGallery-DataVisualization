@@ -62,7 +62,7 @@ server <- function(input, output){
 
   #create dataframe
   donut_data <- data.frame(
-    type = c("Unfilled", "Filled"),
+    type = c("Filled", "Unfilled"),
     value = c(40, 60) #random numbers that are changed in render
   )
 
@@ -85,7 +85,7 @@ server <- function(input, output){
     pie_chart <- donut_plot + coord_polar("y", start = 0)
     pie_chart +
       theme(legend.position = "none") + #no legend
-      scale_fill_manual(values = c("forest green", "light gray"))
+      scale_fill_manual(values = c("light gray", "forest green"))
   }
 
   #render donut
