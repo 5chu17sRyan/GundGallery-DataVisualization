@@ -1,15 +1,15 @@
 
-create_title <-function(){
+create_tree_sim_title <-function(){
   titlePanel(title=div(img(src="http://cliparts.co/cliparts/dc9/KRR/dc9KRRLEi.png", height = 70), 
                        "Gambier Tree Simulator"), 
              windowTitle = "Gambier Tree Simulator ") 
 }
 
-create_description <- function(){
+create_tree_sim_description <- function(){
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem")
 }
 
-create_sliders <- function(){
+create_input_sliders <- function(){
   column( 5,
           sliderInput(inputId = "numTree",
                       label = "Number of Trees",

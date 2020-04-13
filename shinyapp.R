@@ -9,15 +9,14 @@ source("DataProcessing.R")
 source("UserInterface.R")
 
 
-
 #ui-----------
 ui <- fluidPage(
   
-  create_title(),
-  create_description(),
+  create_tree_sim_title(),
+  create_tree_sim_description(),
 
   fluidRow(
-    create_sliders(), 
+    create_input_sliders(), 
     show_output()
   )
 )
@@ -26,18 +25,12 @@ ui <- fluidPage(
 #server-----------------
 
 server <- function(input, output){
-  output$stats <- renderText({
-    benefit <- input$numTree * benefit_from_CBH(pi * input$DBH)
-    paste(
-      "The system's health score is: ", health_score(benefit)
-    )})
-
   #donut plot--------------
 
   #create dataframe
   donut_data <- data.frame(
     type = c("Filled", "Unfilled"),
-    value = c(40, 60) #random numbers that are changed in render
+    value = c(40, 60) #40 and 60 are placeholder values that are changed in render
   )
 
   #Make donut chart
