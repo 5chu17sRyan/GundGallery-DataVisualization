@@ -2,49 +2,23 @@
 library(ggplot2)
 library(shiny)
 
-benefit_from_CBH <-function(CBH){
-  benefit <- exp(-0.23102 + 0.80001 * log(CBH))
-  return (benefit)
-}
+#Contains benefit_from_CBH() and health_score()
+source("DataProcessing.R")
 
-health_score <- function(benefit){
-  score <- round(100 * benefit / (108 * benefit_from_CBH(pi * 5)), digit = 1)
-  return (score)
-}
+#Contains create_title(), create_description(), create_sliders(), and show_output()
+source("UserInterface.R")
+
+
 
 #ui-----------
 ui <- fluidPage(
   
-  titlePanel(title=div(img(src="http://cliparts.co/cliparts/dc9/KRR/dc9KRRLEi.png", height = 70), "Gambier Tree Simulator"), windowTitle = "Gambier Tree Simulator "), 
-  tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem"),
-  
+  create_title(),
+  create_description(),
 
   fluidRow(
-    column( 5,
-            sliderInput(inputId = "numTree",
-                        label = "Number of Trees",
-                        value = 50,
-                        min = 1,
-                        max = 108,
-                        width = '100%'),
-            sliderInput(inputId = "DBH",
-                        label = "Diameter at breast height (ft)",
-                        value = 2.5,
-                        min = 0.2,
-                        max = 5,
-                        step = 0.01,
-                        width = '100%'),
-            style = "padding-top:50px"
-              
-    ),
-    column(7,
-      #textOutput("stats"),
-       
-      #output donut
-      mainPanel(
-        plotOutput(outputId = "donut", width = '150%', height = 600)
-      )
-    )
+    create_sliders(), 
+    show_output()
   )
 )
 
