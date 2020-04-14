@@ -1,8 +1,5 @@
 #install.packages("shiny")
-install.packages('rsconnect')
-rsconnect::setAccountInfo(name='schultzryan', token='65FAB75DD80238942F735D08F86B08A4', secret='qSkCRlxEtaonKPUS1p6RmZxb8RzVgRsj2bXqnOb+')
-library(rsconnect)
-rsconnect::deployApp('C:/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization')
+#rsconnect::deployApp('C:/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization')
 library(ggplot2)
 library(shiny)
 
