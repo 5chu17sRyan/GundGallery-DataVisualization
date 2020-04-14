@@ -1,4 +1,4 @@
-ID,Species,DBH in.,Condition,Total Benefits for this year ($),Storm Water runoff avoided ($),Runoff avoided (gal),Rainfall intercepted (gal),Ozone (oz),Sulfur dioxide (oz),Particulate matter <2.5 microns (oz),Lifetime CO2 equivalent of carbon (lbs),long,lat
+ID,Species,DBH in.,Condition,Total Benefits for this year ($),Storm Water runoff avoided ($),Runoff avoided (gal),Rainfall intercepted (gal),Ozone (oz),Sulfur dioxide (oz),Particulate matter <2.5 microns (oz),Lifetime CO2 equivalent of carbon (lbs),lat,long
 1,White Oak,58.44,Healthy,17.94,5.31,594.47,6392.42,3.57,0.64,0.1,60187.28,40.375858,-82.393387
 2,White Oak,58.44,Healthy,17.94,5.31,594.47,6392.42,3.57,0.64,0.1,60187.28,40.376321,-82.395587
 3,White Oak,51.57,Healthy,17.94,5.31,594.47,6392.42,3.57,0.64,0.1,60187.28,40.373312,-82.393281
