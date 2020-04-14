@@ -2,8 +2,11 @@ library(ggplot2)
 library(shiny)
 library(leaflet)
 library(sp)
+
 data <- read.csv("/Users/wangzhaofang/Desktop/GundProject/GundGallery-DataVisualization/Tree_data.csv")
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
+data$ID <- as.numeric(data$ID)
+ID = paste(data$ID)
 #ui-----------
 ui <- bootstrapPage(
   tags$style(type = "text/css", "html,
@@ -33,10 +36,15 @@ server <- function(input, output, session){
       addCircleMarkers(
         data = data,
         lng = ~long,
-        lat = ~lat
+        lat = ~lat,
+        layerId = ID,
+        label = paste("Tree ID =", ID, sep=" ")
       )
   })
-  
+  observe(
+    leafletProxy("map1") %>%
+      removeMarker(input$map1_marker_click$id)
+  )
 }
 
 shinyApp(ui = ui, server = server)
