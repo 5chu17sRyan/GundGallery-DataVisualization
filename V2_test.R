@@ -81,20 +81,23 @@ server <- function(input, output, session){
   )
   
   #This is the printing function, it definitetly needs to be made prettier lol
-  observeEvent(input$map1_marker_click,{
-                 # output$message1 <- renderText({
-                 #   paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ),
-                 #         "PM 2.5 absorbed: ", updatePM(), "Ozone gas absorbed: ", updateO(),
-                 #         "CO2 absorbed: ", updateCO2())
-                 # })
-    output$message1 <- renderUI({
-      str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
-      str2 <- paste("PM 2.5 absorbed: ", updatePM())
-      str3 <- paste("Ozone gas absorbed: ", updateO())
-      str4 <- paste("CO2 absorbed: ", updateCO2())
-      HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
-    })
-               })
+  observe(if(is.null(input$map1_marker_click))
+              output$message1 <- renderUI({
+                  str1 <- paste("Health score: ", 100)
+                  str2 <- paste("PM 2.5 absorbed: ", TotalPm)
+                  str3 <- paste("Ozone gas absorbed: ", TotalOzone)
+                  str4 <- paste("CO2 absorbed: ", TotalCO2)
+                  HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
+              })
+          else
+              output$message1 <- renderUI({
+                  str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
+                  str2 <- paste("PM 2.5 absorbed: ", updatePM())
+                  str3 <- paste("Ozone gas absorbed: ", updateO())
+                  str4 <- paste("CO2 absorbed: ", updateCO2())
+                  HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
+            })
+          )
 }
 
 shinyApp(ui = ui, server = server)
