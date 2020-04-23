@@ -110,29 +110,29 @@ server <- function(input, output, session){
   #Make donut chart
   draw_plot <- function(donut_data, benefit){
     
-    #Determine hexcode
-    cardinal = "#c82538"
-    sweet_brown = "#b13433"
-    chestnut = "#8d472b"
-    antique_bronze = "#675e24"
-    sap_green = "#45731e"
-    forest_green = "#2e7f18"
-    hexcode = "#2e7f18"
-    if(benefit < 84){
-      hexcode = sap_green
-    } 
-    if(benefit < 68){
-      hexcode = antique_bronze
-    }
-    if(benefit < 52){
-      hexcode = chestnut
-    }
-    if(benefit < 36){
-      hexcode = sweet_brown
-    }
-    if(benefit < 20){
-      hexcode = cardinal
-    }
+    #define benefit again
+    #benefit <-  round(100 * (updateB() / 462.84), digit = 1 )
+    
+    #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
+    #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
+    
+    #Equations to calculate color values based on value of benefit
+    
+    red <- floor((34-255)/100*benefit+255)
+    green <- floor((139-37)/100*benefit+37)
+    blue <- floor((34-56)/100*benefit+56)
+    
+    #rgb = floor(144708.78*benefit+2263842)
+    
+    #Convert RGB values to hexadecimal
+    hex_strings <- as.hexmode(c(red, green, blue))
+    
+    #Concatenate to create full hexcode
+    code <- paste(hex_strings, collapse='')
+    hash <- "#"
+    hexcode <- paste(c(hash, code), collapse='')
+    
+    
     
     
     #make bar chart into pie chart
