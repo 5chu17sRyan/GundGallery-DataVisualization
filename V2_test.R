@@ -110,8 +110,30 @@ server <- function(input, output, session){
   #Make donut chart
   draw_plot <- function(donut_data, benefit){
     
-    #define benefit again
-    #benefit <-  round(100 * (updateB() / 462.84), digit = 1 )
+    #Determine hexcode
+    cardinal = "#c82538"
+    sweet_brown = "#b13433"
+    chestnut = "#8d472b"
+    antique_bronze = "#675e24"
+    sap_green = "#45731e"
+    forest_green = "#2e7f18"
+    hexcode = "#2e7f18"
+    if(benefit < 84){
+      hexcode = sap_green
+    } 
+    if(benefit < 68){
+      hexcode = antique_bronze
+    }
+    if(benefit < 52){
+      hexcode = chestnut
+    }
+    if(benefit < 36){
+      hexcode = sweet_brown
+    }
+    if(benefit < 20){
+      hexcode = cardinal
+    }
+    
     
     #make bar chart into pie chart
     donut_plot <- ggplot(donut_data, aes(x = 2, y = value, fill = type)) +
@@ -125,7 +147,7 @@ server <- function(input, output, session){
     pie_chart <- donut_plot + coord_polar("y", start = 0)
     pie_chart +
       theme(legend.position = "none") + #no legend
-      scale_fill_manual(values = c("light gray", "forest green"))
+      scale_fill_manual(values = c("light gray", hexcode))
   }
   
 
