@@ -5,13 +5,13 @@ library(sp)
 library(htmltools)
 
 
-TotalRunoffAvoided <-14140.62
+TotalRunoffAvoided <-16577.51
 TotalPm <- 67.12
 TotalCO2 <- 980776.97
 totalB <- 462.84
 benefit <- totalB
 
-data <- read.csv("/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization/Tree_data.csv")
+data <- read.csv("/Users/wangzhaofang/Desktop/GundProject/GundGallery-DataVisualization/Tree_data.csv")
 
 #Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
@@ -164,9 +164,9 @@ server <- function(input, output, session){
           else
               output$message1 <- renderUI({
                   str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
-                  str2 <- paste("Stormwatter Runoff Avoided ", updateRunoff(), " gallons")
-                  str3 <- paste("Particulate Matter removed: ", updatePM(), " ounces per year")
-                  str4 <- paste("CO2 absorbed: ", updateCO2(), " pounds")
+                  str2 <- paste("Stormwatter Runoff Avoided ", round(updateRunoff(), digit = 1), " gallons")
+                  str3 <- paste("Particulate Matter removed: ", round(updatePM(), digit = 1), " ounces per year")
+                  str4 <- paste("CO2 absorbed: ", round(updateCO2(), digit = 1), " pounds")
                   HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
               })
           )
