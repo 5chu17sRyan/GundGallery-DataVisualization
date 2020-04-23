@@ -16,8 +16,8 @@ data <- read.csv("/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Desi
 #Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
-#Creates a data frame which holds 
-#ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs) 
+#Creates a data frame which holds
+#ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs)
 #for each tree
 accessData <- data.frame(data[,c(1,5,7,11,12)])
 data$ID <- as.numeric(data$ID)
@@ -41,14 +41,14 @@ ui <- fluidPage(
   titlePanel(title=div(img(src="http://cliparts.co/cliparts/dc9/KRR/dc9KRRLEi.png", height = 70), "Gambier Tree Simulator"),
              windowTitle = "Gambier Tree Simulator "),
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem"),
-  
+
   fluidRow(
-    column(4, 
+    column(4,
            leafletOutput("map1",
                          width= '100%',
                          height = 500),
            # actionButton(inputId = "clean", lable = "Start over"),
-           
+
            htmlOutput("message1")
            ),
     column(8,
@@ -75,7 +75,7 @@ server <- function(input, output, session){
         # label = HTML(paste0("<h3>Tree Info</h3>", "Tree ID = ", ID, "CO2 = ", sep = "\t"))
       )
   })
-  
+
   #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
   updateB <- eventReactive(input$map1_marker_click,{
     totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
@@ -98,43 +98,47 @@ server <- function(input, output, session){
     leafletProxy("map1") %>%
       removeMarker(input$map1_marker_click$id)
   )
-  
+
   #donut plot--------------
-  
+
   #create dataframe
   donut_data <- data.frame(
     type = c("Filled", "Unfilled"),
     value = c(40, 60) #40 and 60 are placeholder values that are changed in render
   )
-  
+
   #Make donut chart
   draw_plot <- function(donut_data, benefit){
-    
+
     #define benefit again
     #benefit <-  round(100 * (updateB() / 462.84), digit = 1 )
-    
-    #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
-    #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
-    
-    #Equations to calculate color values based on value of benefit
-    
-    red <- floor((34-255)/100*benefit+255)
-    green <- floor((139-37)/100*benefit+37)
-    blue <- floor((34-56)/100*benefit+56)
-    
-    #rgb = floor(144708.78*benefit+2263842)
-    
-    #Convert RGB values to hexadecimal
-    hex_strings <- as.hexmode(c(red, green, blue))
-    
-    #Concatenate to create full hexcode
-    code <- paste(hex_strings, collapse='')
-    hash <- "#"
-    hexcode <- paste(c(hash, code), collapse='')
-    
-    
-    
-    
+
+    cardinal = "#c82538"
+   sweet_brown = "#b13433"
+   chestnut = "#8d472b"
+   antique_bronze = "#675e24"
+   sap_green = "#45731e"
+   forest_green = "#2e7f18"
+   hexcode = "#2e7f18"
+   if(benefit < 84){
+     hexcode = sap_green
+   }
+   if(benefit < 68){
+     hexcode = antique_bronze
+   }
+   if(benefit < 52){
+     hexcode = chestnut
+   }
+   if(benefit < 36){
+     hexcode = sweet_brown
+   }
+   if(benefit < 20){
+     hexcode = cardinal
+   }
+
+
+
+
     #make bar chart into pie chart
     donut_plot <- ggplot(donut_data, aes(x = 2, y = value, fill = type)) +
       geom_bar(size = 1, color = "transparent", stat = "identity")+
@@ -142,14 +146,14 @@ server <- function(input, output, session){
       coord_polar("y", start = 0)+
       xlim(-4, 2.5) +   #donut thickness
       annotate(geom = 'text', x = -4, y =100, color="forest green",size=20, label=benefit) #make text
-    
+
     #make pie chart into donut chart
     pie_chart <- donut_plot + coord_polar("y", start = 0)
     pie_chart +
       theme(legend.position = "none") + #no legend
       scale_fill_manual(values = c("light gray", hexcode))
   }
-  
+
 
   #This is the printing function, it definitely needs to be made prettier lol
   observe(if(is.null(input$map1_marker_click))
@@ -160,7 +164,7 @@ server <- function(input, output, session){
                   str4 <- paste("CO2 absorbed: ", TotalCO2)
                   HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
               })
-          
+
           else
               output$message1 <- renderUI({
                   str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
@@ -170,7 +174,7 @@ server <- function(input, output, session){
                   HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
               })
           )
-  
+
   #Renders donut
   observe(if(is.null(input$map1_marker_click))
             output$donut <- renderPlot({
@@ -179,7 +183,7 @@ server <- function(input, output, session){
               donut_data$value[1] <- 100-benefit #Unfilled
               draw_plot(donut_data, benefit)
             })
-          
+
           else
             output$donut <- renderPlot({
               benefit <- round(100 * (updateB() / 462.84), digit = 1 )
