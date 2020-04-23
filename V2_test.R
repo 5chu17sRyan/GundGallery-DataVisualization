@@ -145,7 +145,7 @@ server <- function(input, output, session){
       theme_void()+ #blanking everything else out
       coord_polar("y", start = 0)+
       xlim(-4, 2.5) +   #donut thickness
-      annotate(geom = 'text', x = -4, y =100, color="forest green",size=20, label=benefit) #make text
+      annotate(geom = 'text', x = -4, y =100, color=hexcode,size=20, label=benefit) #make text
 
     #make pie chart into donut chart
     pie_chart <- donut_plot + coord_polar("y", start = 0)
