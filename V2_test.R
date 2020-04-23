@@ -4,6 +4,7 @@ library(leaflet)
 library(sp)
 library(htmltools)
 
+
 TotalRunoffAvoided <-14140.62
 TotalPm <- 67.12
 TotalCO2 <- 980776.97
@@ -50,6 +51,7 @@ ui <- bootstrapPage(
 
 server <- function(input, output, session){
 
+  #Renders Map
   output$map1 <- renderLeaflet({
     leaflet(data = data) %>%
       addProviderTiles(providers$OpenStreetMap) %>%
@@ -62,37 +64,40 @@ server <- function(input, output, session){
         # label = HTML(paste0("<h3>Tree Info</h3>", "Tree ID = ", ID, "CO2 = ", sep = "\t"))
       )
   })
+  
+  #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
+  #newTotalPm <- reactive({
+    #TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
+  #})
 
-  newTotalPm <- reactive({
-    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
-  })
+  #newTotalCO2 <- reactive({
+    #TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
+  #})
 
-  newTotalCO2 <- reactive({
-    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
-  })
+  #newTotalRunoff <- reactive({
+    #TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
+  #})
 
-  newTotalRunoff <- reactive({
-    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
-  })
+  #newTotalB <- reactive({
+    #totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
+  #})
 
-  newTotalB <- reactive({
+  
+  #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
+  updateB <- eventReactive(input$map1_marker_click,{
     totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
   })
 
-  updateB <- eventReactive(input$map1_marker_click,{
-      newTotalB()
-    })
-
   updateRunoff <- eventReactive(input$map1_marker_click,{
-    newTotalRunoff()
+    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
   })
 
   updateCO2 <- eventReactive(input$map1_marker_click,{
-    newTotalCO2()
+    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
   })
 
   updatePM <- eventReactive(input$map1_marker_click,{
-    newTotalPm()
+    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
   })
 
   observe(
