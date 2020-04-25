@@ -45,7 +45,7 @@ ui <- fluidPage(
     column(4,
            leafletOutput("map1",
                          width= '100%',
-                         height = 500),
+                         height = 500)
            # actionButton(inputId = "clean", lable = "Start over"),
 
            # htmlOutput("message1")
@@ -54,6 +54,9 @@ ui <- fluidPage(
            mainPanel(plotOutput(outputId = "donut", width = '100%', height = 500))
            )
   ),
+  
+  #Adding blank row between application and further information
+  fluidRow(tags$div(style='height:75px;')),
   
   #Detailed data descriptions
   fluidRow(
@@ -128,11 +131,12 @@ server <- function(input, output, session){
     #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
     #Black: Red=0=00. Green=0=00, Blue=0=00
     #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
+    #Bright Green: Red=51=33, Green=209=d1, Blue=51=33
 
     #Equations to calculate color values based on value of benefit (green -> black)
-    red <- floor((34-0)/100*benefit+0)
-    green <- floor((139-0)/100*benefit+0)
-    blue <- floor((34-0)/100*benefit+0)
+    red <- floor((51-0)/100*benefit+0)
+    green <- floor((209-0)/100*benefit+0)
+    blue <- floor((51-0)/100*benefit+0)
 
     #rgb = floor(144708.78*benefit+2263842)
 
