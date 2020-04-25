@@ -11,8 +11,7 @@ TotalCO2 <- 980776.97
 totalB <- 462.84
 benefit <- totalB
 
-data <- read.csv("/Users/wangzhaofang/Desktop/GundProject/GundGallery-DataVisualization/Tree_data.csv")
-
+data <- read.csv("/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization/Tree_data.csv")
 #Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
@@ -49,10 +48,23 @@ ui <- fluidPage(
                          height = 500),
            # actionButton(inputId = "clean", lable = "Start over"),
 
-           htmlOutput("message1")
+           # htmlOutput("message1")
            ),
     column(8,
            mainPanel(plotOutput(outputId = "donut", width = '100%', height = 500))
+           )
+  ),
+  
+  #Detailed data descriptions
+  fluidRow(
+    column(4, 
+           tags$p("Description of Stormwater Runoff Avoided")
+           ),
+    column(4,
+           tags$p("Description of Particulate Matter Removed")
+           ),
+    column(4,
+           tags$p("Description of Carbon Sequestered")
            )
   )
 )
@@ -114,13 +126,13 @@ server <- function(input, output, session){
     #benefit <-  round(100 * (updateB() / 462.84), digit = 1 )
 
     #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
+    #Black: Red=0=00. Green=0=00, Blue=0=00
     #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
 
-    #Equations to calculate color values based on value of benefit
-
-    red <- floor((34-255)/100*benefit+255)
-    green <- floor((139-37)/100*benefit+37)
-    blue <- floor((34-56)/100*benefit+56)
+    #Equations to calculate color values based on value of benefit (green -> black)
+    red <- floor((34-0)/100*benefit+0)
+    green <- floor((139-0)/100*benefit+0)
+    blue <- floor((34-0)/100*benefit+0)
 
     #rgb = floor(144708.78*benefit+2263842)
 
