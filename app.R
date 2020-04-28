@@ -4,22 +4,21 @@ library(leaflet)
 library(sp)
 library(htmltools)
 
-#install.packages('rsconnect')
-rsconnect::setAccountInfo(name='schultzryan', token='65FAB75DD80238942F735D08F86B08A4', secret='qSkCRlxEtaonKPUS1p6RmZxb8RzVgRsj2bXqnOb+')
-library(rsconnect)
-rsconnect::deployApp("C:/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization")
+rsconnect::deployApp('/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization')
 
-TotalRunoffAvoided <-14140.62
+
+TotalRunoffAvoided <-16577.51
 TotalPm <- 67.12
 TotalCO2 <- 980776.97
 totalB <- 462.84
 benefit <- totalB
 
-data <- read.csv("C:/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization/Tree_data.csv")
+data <- read.csv("/Tree_data.csv")
+#Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
-#Creates a data frame which holds 
-#ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs) 
+#Creates a data frame which holds
+#ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs)
 #for each tree
 accessData <- data.frame(data[,c(1,5,7,11,12)])
 data$ID <- as.numeric(data$ID)
@@ -37,93 +36,250 @@ labels <- lapply(seq(nrow(accessData)), function(i) {
 
 #ui-----------
 
-ui <- bootstrapPage(
+ui <- fluidPage(
   tags$style(type = "text/css", "html,
              body {width:100%;height:100%}"),
-  titlePanel(title=div(img(src="http://cliparts.co/cliparts/dc9/KRR/dc9KRRLEi.png", height = 70), "Gambier Tree Simulator"),
-             windowTitle = "Gambier Tree Simulator "),
+  tags$h1(img(src = "Tree Icon 1.png", width = 60), "Gambier Tree Simulator"),
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem"),
-  leafletOutput("map1",
-                width= "50%",
-                height = "50%"),
-  # actionButton(inputId = "clean", lable = "Start over"),
-  htmlOutput("message1")
-  )
+
+  fluidRow(
+    column(6,
+           tabsetPanel(id="map_tab",
+                       tabPanel("Map",
+                                leafletOutput("map1",
+                                              width= 500,
+                                              height = 500)
+                                # actionButton(inputId = "clean", lable = "Start over"),
+                                # htmlOutput("message1")
+                                )
+                       )
+           ),
+    column(6,
+           tabsetPanel(tabPanel("Health Score",plotOutput(outputId = "donut", width = 500, height = 500)))
+    )
+  ),
+
+  #Adding blank row between application and further information
+  fluidRow(tags$div(style='height:75px;')),
+
+  #Detailed data descriptions
+  fluidRow(
+    column(4,
+           tags$h4("Stormwater Runoff Avioded"),
+           htmlOutput(outputId = "RunoffDescription")
+           ),
+    column(4,
+           tags$h4("Particulate Matter Removed"),
+           htmlOutput(outputId = "PM_Description")
+           ),
+    column(4,
+           tags$h4("Oxygen Produced"),
+           htmlOutput(outputId = "CO2Description")
+           #tags$p("Description of Carbon Sequestered")
+           )
+  ),
+
+  fluidRow(tags$div(style='height:50px;'))
+)
 
 
 #server-----------------
 
 server <- function(input, output, session){
-  
+
+  greenLeafIcon <- makeIcon(
+    iconUrl = "Tree Icon 2.png",
+    iconWidth = 38, iconHeight = 38,
+    iconAnchorX = 22, iconAnchorY = 94,
+    shadowUrl = "Tree Shadow.png",
+    shadowWidth = 38, shadowHeight = 38,
+    shadowAnchorX = 22, shadowAnchorY = 94
+  )
+
+  #Renders Map
   output$map1 <- renderLeaflet({
     leaflet(data = data) %>%
       addProviderTiles(providers$OpenStreetMap) %>%
-      addCircleMarkers(
+      addMarkers(
         data = data,
         lng = ~long,
         lat = ~lat,
+        icon = greenLeafIcon,
         layerId = ID,
         label = lapply(labels, htmltools::HTML)
         # label = HTML(paste0("<h3>Tree Info</h3>", "Tree ID = ", ID, "CO2 = ", sep = "\t"))
       )
   })
-  
-  newTotalPm <- reactive({
-    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
-  })
-  
-  newTotalCO2 <- reactive({
-    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
-  })
-  
-  newTotalRunoff <- reactive({
-    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
-  })
-  
-  newTotalB <- reactive({
+
+  #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
+  updateB <- eventReactive(input$map1_marker_click,{
     totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
   })
-  
-  updateB <- eventReactive(input$map1_marker_click,{
-    newTotalB()
-  })
-  
+
   updateRunoff <- eventReactive(input$map1_marker_click,{
-    newTotalRunoff()
+    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
   })
-  
+
   updateCO2 <- eventReactive(input$map1_marker_click,{
-    newTotalCO2()
+    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
   })
-  
+
   updatePM <- eventReactive(input$map1_marker_click,{
-    newTotalPm()
+    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
   })
-  
+
+  #Removes marker when clicked
   observe(
     leafletProxy("map1") %>%
-      
       removeMarker(input$map1_marker_click$id)
   )
-  
+
+  #donut plot--------------
+
+  #create dataframe
+  donut_data <- data.frame(
+    type = c("Filled", "Unfilled"),
+    value = c(40, 60) #40 and 60 are placeholder values that are changed in render
+  )
+
+  #Make donut chart
+  draw_plot <- function(donut_data, benefit){
+
+    #define benefit again
+
+    #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
+    #Black: Red=0=00. Green=0=00, Blue=0=00
+    #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
+    #Bright Green: Red=51=33, Green=209=d1, Blue=51=33
+
+    #Equations to calculate color values based on value of benefit (green -> black)
+    red <- floor((51-0)/100*benefit+0)
+    green <- floor((209-0)/100*benefit+0)
+    blue <- floor((51-0)/100*benefit+0)
+
+    #rgb = floor(144708.78*benefit+2263842)
+
+    #Convert RGB values to hexadecimal
+    hex_strings <- as.hexmode(c(red, green, blue))
+
+    #Concatenate to create full hexcode
+    code <- paste(hex_strings, collapse='')
+    hash <- "#"
+    hexcode <- paste(c(hash, code), collapse='')
+
+
+    #make bar chart into pie chart
+    donut_plot <- ggplot(donut_data, aes(x = 2, y = value, fill = type)) +
+      geom_bar(size = 1, color = "transparent", stat = "identity")+
+      theme_void()+ #blanking everything else out
+      coord_polar("y", start = 0)+
+      xlim(-4, 2.5) +   #donut thickness
+      annotate(geom = 'text', x = -4, y =100, color=hexcode,size=20, label=benefit) #make text
+
+    #make pie chart into donut chart
+    pie_chart <- donut_plot + coord_polar("y", start = 0)
+    pie_chart +
+      theme(legend.position = "none") + #no legend
+      scale_fill_manual(values = c("light gray", hexcode))
+  }
+
+
+  #Events when map marker is clickeds
+  observe(if(is.null(input$map1_marker_click))
+    {
+      #Render donut plot
+      output$donut <- renderPlot({
+        benefit <- 100
+        donut_data$value[2] <- benefit #Filled
+        donut_data$value[1] <- 100-benefit #Unfilled
+        draw_plot(donut_data, benefit)
+      })
+    }
+    else
+    {
+      #Render donut plot
+      output$donut <- renderPlot({
+        benefit <- round(100 * (updateB() / 462.84), digit = 1 )
+        donut_data$value[2] <- benefit #Filled
+        donut_data$value[1] <- 100-benefit #Unfilled
+        draw_plot(donut_data, benefit)
+      })
+
+
+      #Calculation of Hazard Rate (Increase in mortality)
+      campusSize <- 4046356.42 #meters squared
+      heightOfAtmosphere <- 8200 #meters
+      atmosphereAboveCampus <- campusSize*heightOfAtmosphere #meters cubed
+
+      PM_Increase <- 67.12 - updatePM() #ounces per year
+
+      microgramsPerOunce <- 28349523.1
+      PM_microgramsIncrease <- PM_Increase*microgramsPerOunce #micrograms
+
+      PM_concentrationIncrease <- PM_microgramsIncrease/atmosphereAboveCampus #micrograms per meter squared
+
+      #"1.9 increase in PM concentration associated with 1.02 times the rate of death"
+      rateOfDeathIncrease <- round( 1.02^(PM_concentrationIncrease/1.9), 6 ) #per year
+
+
+      #Description of PM Removed
+      output$PM_Description <- renderText({
+      PMdescription <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, the trees in this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by",
+                             rateOfDeathIncrease, "per year. If no new trees were planted, after 100 years the rate of death would have increased by",
+                             round(rateOfDeathIncrease^100, 6), " times.")
+        HTML(PMdescription)
+      })
+
+
+      #Description of Stormwater Runoff Avoided
+      avgTreeLifespan <- 95.0577864 #years
+      totalRunoffAvoidedPerYear <- 174.1836269
+      runoffIncrease <- round( totalRunoffAvoidedPerYear - ( updateRunoff()/avgTreeLifespan ), 2)
+
+      output$RunoffDescription <- renderText({
+        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
+                                   runoffIncrease, " gallons.")
+        HTML(runoffDescription)
+      })
+
+
+      #Description of Oxygen Produced
+      molecularMassCO2 <- 44.0095 #grams per mole
+      molecularMassO2 <- 31.9988 #grams per mol
+      ratioOfMasses <- molecularMassO2/molecularMassCO2
+
+      maxCarbonSeqesteredPerYear <- 10317.69 #pounds
+      carbonSequesteredDecrease <- maxCarbonSeqesteredPerYear - ( updateCO2()/avgTreeLifespan)
+      oxygenProductionDecrease <- round( carbonSequesteredDecrease*ratioOfMasses, 2)
+
+      output$CO2Description <- renderText({
+        co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
+                                oxygenProductionDecrease, " less pounds of oxygen are being produced each year.")
+        HTML(co2Description)
+      })
+    }
+  )
+
+
   #This is the printing function, it definitely needs to be made prettier lol
   observe(if(is.null(input$map1_marker_click))
-    output$message1 <- renderUI({
-      str1 <- paste("Health score: ", 100)
-      str2 <- paste("Stormwater Runoff Avoided: ", TotalRunoffAvoided, " gallons")
-      str3 <- paste("Particulate Matter removed: ", TotalPm, " ounces per year")
-      str4 <- paste("CO2 absorbed: ", TotalCO2)
-      HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
-    })
-    else
-      output$message1 <- renderUI({
-        str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
-        str2 <- paste("Stormwatter Runoff Avoided ", updateRunoff(), " gallons")
-        str3 <- paste("Particulate Matter removed: ", updatePM(), " ounces per year")
-        str4 <- paste("CO2 absorbed: ", updateCO2(), " pounds")
-        HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
-      })
-  )
+              output$message1 <- renderUI({
+                  str1 <- paste("Health score: ", 100)
+                  str2 <- paste("Stormwater Runoff Avoided: ", TotalRunoffAvoided, " gallons")
+                  str3 <- paste("Particulate Matter removed: ", TotalPm, " ounces per year")
+                  str4 <- paste("CO2 absorbed: ", TotalCO2)
+                  HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
+              })
+
+          else
+              output$message1 <- renderUI({
+                  str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
+                  str2 <- paste("Stormwatter Runoff Avoided ", round(updateRunoff(), digit = 1), " gallons")
+                  str3 <- paste("Particulate Matter removed: ", round(updatePM(), digit = 1), " ounces per year")
+                  str4 <- paste("CO2 absorbed: ", round(updateCO2(), digit = 1), " pounds")
+                  HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
+              })
+          )
 }
 
 shinyApp(ui = ui, server = server)
