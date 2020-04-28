@@ -42,25 +42,25 @@ ui <- fluidPage(
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem"),
 
   fluidRow(
-    column(4,
-           leafletOutput("map1",
-                         width= '100%',
-                         height = 500)
+    column(6,
+           tabsetPanel(id="map_tab",
+                       tabPanel("Map",
+                                leafletOutput("map1",
+                                              width= 500,
+                                              height = 500),
            # actionButton(inputId = "clean", lable = "Start over"),
-
-           # htmlOutput("message1")
-           ),
-    column(8,
-           mainPanel(plotOutput(outputId = "donut", width = '100%', height = 500))
-           )
+           htmlOutput("message1")))),
+    column(6,
+           tabsetPanel(tabPanel("Health Score",plotOutput(outputId = "donut", width = 500, height = 500)))
+    )
   ),
-  
+
   #Adding blank row between application and further information
   fluidRow(tags$div(style='height:75px;')),
-  
+
   #Detailed data descriptions
   fluidRow(
-    column(4, 
+    column(4,
            tags$p("Description of Stormwater Runoff Avoided")
            ),
     column(4,
