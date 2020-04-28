@@ -46,9 +46,12 @@ ui <- fluidPage(
                        tabPanel("Map",
                                 leafletOutput("map1",
                                               width= 500,
-                                              height = 500),
-           # actionButton(inputId = "clean", lable = "Start over"),
-           htmlOutput("message1")))),
+                                              height = 500)
+                                # actionButton(inputId = "clean", lable = "Start over"),
+                                # htmlOutput("message1")
+                                )
+                       )
+           ),
     column(6,
            tabsetPanel(tabPanel("Health Score",plotOutput(outputId = "donut", width = 500, height = 500)))
     )
@@ -60,12 +63,15 @@ ui <- fluidPage(
   #Detailed data descriptions
   fluidRow(
     column(4,
+           tags$h4("Stormwater Runoff Avioded"),
            tags$p("Description of Stormwater Runoff Avoided")
            ),
     column(4,
-           tags$p("Description of Particulate Matter Removed")
+           tags$h4("Particulate Matter Removed"),
+           htmlOutput(outputId = "PM_Description")           
            ),
     column(4,
+           tags$h4("Oxygen Produced"),
            tags$p("Description of Carbon Sequestered")
            )
   )
@@ -135,7 +141,6 @@ server <- function(input, output, session){
   draw_plot <- function(donut_data, benefit){
 
     #define benefit again
-    #benefit <-  round(100 * (updateB() / 462.84), digit = 1 )
 
     #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
     #Black: Red=0=00. Green=0=00, Blue=0=00
@@ -157,9 +162,7 @@ server <- function(input, output, session){
     hash <- "#"
     hexcode <- paste(c(hash, code), collapse='')
 
-
-
-
+    
     #make bar chart into pie chart
     donut_plot <- ggplot(donut_data, aes(x = 2, y = value, fill = type)) +
       geom_bar(size = 1, color = "transparent", stat = "identity")+
@@ -174,8 +177,57 @@ server <- function(input, output, session){
       theme(legend.position = "none") + #no legend
       scale_fill_manual(values = c("light gray", hexcode))
   }
+  
+  
+  #Events when map marker is clickeds
+  observe(if(is.null(input$map1_marker_click))
+    {
+      #Render donut plot
+      output$donut <- renderPlot({
+        benefit <- 100
+        donut_data$value[2] <- benefit #Filled
+        donut_data$value[1] <- 100-benefit #Unfilled
+        draw_plot(donut_data, benefit)
+      })
+    }
+    else
+    {
+      #Render donut plot
+      output$donut <- renderPlot({
+        benefit <- round(100 * (updateB() / 462.84), digit = 1 )
+        donut_data$value[2] <- benefit #Filled
+        donut_data$value[1] <- 100-benefit #Unfilled
+        draw_plot(donut_data, benefit)
+      })
+      
+      
+      #Calculation of Hazard Rate (Increase in mortality)
+      campusSize <- 4046356.42 #meters squared
+      heightOfAtmosphere <- 8200 #meters
+      atmosphereAboveCampus <- campusSize*heightOfAtmosphere #meters cubed
+      
+      PM_Increase <- 67.12 - updatePM() #ounces per year
+      
+      microgramsPerOunce <- 28349523.1
+      PM_microgramsIncrease <- PM_Increase*microgramsPerOunce #micrograms
+      
+      PM_concentrationIncrease <- PM_microgramsIncrease/atmosphereAboveCampus #micrograms per meter squared
+      
+      #"1.9 increase in PM concentration associated with 1.02 times the rate of death"
+      rateOfDeathIncrease <- round( 1.02^(PM_concentrationIncrease/1.9), 6 ) #per year
+      
+      
+      #Description of PM Removed
+      output$PM_Description <- renderText({
+      description <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by", 
+                             rateOfDeathIncrease, "per year. If no new trees were planted, after 100 years the rate of death would have increased by", 
+                             round(rateOfDeathIncrease^100, 6), ".")
+        HTML(description)
+      })
+    }
+  )
 
-
+  
   #This is the printing function, it definitely needs to be made prettier lol
   observe(if(is.null(input$map1_marker_click))
               output$message1 <- renderUI({
@@ -195,24 +247,6 @@ server <- function(input, output, session){
                   HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
               })
           )
-
-  #Renders donut
-  observe(if(is.null(input$map1_marker_click))
-            output$donut <- renderPlot({
-              benefit <- 100
-              donut_data$value[2] <- benefit #Filled
-              donut_data$value[1] <- 100-benefit #Unfilled
-              draw_plot(donut_data, benefit)
-            })
-
-          else
-            output$donut <- renderPlot({
-              benefit <- round(100 * (updateB() / 462.84), digit = 1 )
-              donut_data$value[2] <- benefit #Filled
-              donut_data$value[1] <- 100-benefit #Unfilled
-              draw_plot(donut_data, benefit)
-            })
-  )
 }
 
 shinyApp(ui = ui, server = server)
