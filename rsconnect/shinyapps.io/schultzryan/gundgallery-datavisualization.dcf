@@ -1,0 +1,13 @@
+name: gundgallery-datavisualization
+title:
+username:
+account: schultzryan
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2109124
+bundleId: 3078223
+url: https://schultzryan.shinyapps.io/gundgallery-datavisualization/
+when: 1588102604.79509
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: coordinates.csv|Project Documents

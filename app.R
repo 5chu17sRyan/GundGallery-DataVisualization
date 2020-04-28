@@ -3,9 +3,9 @@ library(shiny)
 library(leaflet)
 library(sp)
 library(htmltools)
+library(rsconnect)
 
-rsconnect::deployApp('/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization')
-
+#deployApp()
 
 TotalRunoffAvoided <-16577.51
 TotalPm <- 67.12
@@ -13,7 +13,7 @@ TotalCO2 <- 980776.97
 totalB <- 462.84
 benefit <- totalB
 
-data <- read.csv("/Tree_data.csv")
+data <- read.csv("Tree_data.csv")
 #Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
