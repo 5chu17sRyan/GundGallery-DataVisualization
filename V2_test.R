@@ -11,12 +11,7 @@ TotalCO2 <- 980776.97
 totalB <- 462.84
 benefit <- totalB
 
-<<<<<<< HEAD
 data <- read.csv("/Users/ryans/OneDrive/Desktop/Spring 2020/Software System Design/GGDataVisualization/GundGallery-DataVisualization/Tree_data.csv")
-=======
-data <- read.csv("/Users/luyiyang/Desktop/GundGallery-DataVisualization/Tree_data.csv")
-
->>>>>>> V2-DiscreteChart
 #Creates data frame for latitude and longitude
 data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
@@ -57,7 +52,6 @@ ui <- fluidPage(
     column(6,
            tabsetPanel(tabPanel("Health Score",plotOutput(outputId = "donut", width = 500, height = 500)))
     )
-<<<<<<< HEAD
   ),
 
   #Adding blank row between application and further information
@@ -74,8 +68,6 @@ ui <- fluidPage(
     column(4,
            tags$p("Description of Carbon Sequestered")
            )
-=======
->>>>>>> V2-DiscreteChart
   )
 )
 
@@ -83,7 +75,7 @@ ui <- fluidPage(
 #server-----------------
 
 server <- function(input, output, session){
-  
+
   greenLeafIcon <- makeIcon(
     iconUrl = "Tree Icon 2.png",
     iconWidth = 38, iconHeight = 38,
@@ -92,7 +84,7 @@ server <- function(input, output, session){
     shadowWidth = 38, shadowHeight = 38,
     shadowAnchorX = 22, shadowAnchorY = 94
   )
-  
+
   #Renders Map
   output$map1 <- renderLeaflet({
     leaflet(data = data) %>%
@@ -112,19 +104,19 @@ server <- function(input, output, session){
   updateB <- eventReactive(input$map1_marker_click,{
     totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
   })
-  
+
   updateRunoff <- eventReactive(input$map1_marker_click,{
     TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
   })
-  
+
   updateCO2 <- eventReactive(input$map1_marker_click,{
     TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
   })
-  
+
   updatePM <- eventReactive(input$map1_marker_click,{
     TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
   })
-  
+
   #Removes marker when clicked
   observe(
     leafletProxy("map1") %>%
@@ -174,20 +166,14 @@ server <- function(input, output, session){
       theme_void()+ #blanking everything else out
       coord_polar("y", start = 0)+
       xlim(-4, 2.5) +   #donut thickness
-<<<<<<< HEAD
       annotate(geom = 'text', x = -4, y =100, color=hexcode,size=20, label=benefit) #make text
 
-=======
-      annotate(geom = 'text', x=-4, y=100, color=hexcode,size=20, label=benefit) #make text
-    
->>>>>>> V2-DiscreteChart
     #make pie chart into donut chart
     pie_chart <- donut_plot + coord_polar("y", start = 0)
     pie_chart +
       theme(legend.position = "none") + #no legend
       scale_fill_manual(values = c("light gray", hexcode))
   }
-<<<<<<< HEAD
 
 
   #This is the printing function, it definitely needs to be made prettier lol
@@ -226,46 +212,6 @@ server <- function(input, output, session){
               donut_data$value[1] <- 100-benefit #Unfilled
               draw_plot(donut_data, benefit)
             })
-=======
-  
-  
-  #This is the printing function, it definitely needs to be made prettier lol
-  observe(if(is.null(input$map1_marker_click))
-    output$message1 <- renderUI({
-      str1 <- paste("Health score: ", 100)
-      str2 <- paste("Stormwater Runoff Avoided: ", TotalRunoffAvoided, " gallons")
-      str3 <- paste("Particulate Matter removed: ", TotalPm, " ounces per year")
-      str4 <- paste("CO2 absorbed: ", TotalCO2)
-      HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
-    })
-    
-    else
-      output$message1 <- renderUI({
-        str1 <- paste("Health score: ", round(100 * (updateB() / 462.84), digit = 1 ))
-        str2 <- paste("Stormwatter Runoff Avoided ", updateRunoff(), " gallons")
-        str3 <- paste("Particulate Matter removed: ", updatePM(), " ounces per year")
-        str4 <- paste("CO2 absorbed: ", updateCO2(), " pounds")
-        HTML(paste(str1, str2, str3, str4, sep = '<br/>'))
-      })
-  )
-  
-  #Renders donut
-  observe(if(is.null(input$map1_marker_click))
-    output$donut <- renderPlot({
-      benefit <- 100
-      donut_data$value[2] <- benefit #Filled
-      donut_data$value[1] <- 100-benefit #Unfilled
-      draw_plot(donut_data, benefit)
-    })
-    
-    else
-      output$donut <- renderPlot({
-        benefit <- round(100 * (updateB() / 462.84), digit = 1 )
-        donut_data$value[2] <- benefit #Filled
-        donut_data$value[1] <- 100-benefit #Unfilled
-        draw_plot(donut_data, benefit)
-      })
->>>>>>> V2-DiscreteChart
   )
 }
 
