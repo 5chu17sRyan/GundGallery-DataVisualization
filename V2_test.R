@@ -64,7 +64,8 @@ ui <- fluidPage(
   fluidRow(
     column(4,
            tags$h4("Stormwater Runoff Avioded"),
-           tags$p("Description of Stormwater Runoff Avoided")
+           htmlOutput(outputId = "RunoffDescription")
+           #tags$p("Description of Stormwater Runoff Avoided")
            ),
     column(4,
            tags$h4("Particulate Matter Removed"),
@@ -74,7 +75,9 @@ ui <- fluidPage(
            tags$h4("Oxygen Produced"),
            tags$p("Description of Carbon Sequestered")
            )
-  )
+  ),
+  
+  fluidRow(tags$div(style='height:50px;'))
 )
 
 
@@ -219,10 +222,22 @@ server <- function(input, output, session){
       
       #Description of PM Removed
       output$PM_Description <- renderText({
-      description <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by", 
+      PMdescription <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, the trees in this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by", 
                              rateOfDeathIncrease, "per year. If no new trees were planted, after 100 years the rate of death would have increased by", 
-                             round(rateOfDeathIncrease^100, 6), ".")
-        HTML(description)
+                             round(rateOfDeathIncrease^100, 6), " times.")
+        HTML(PMdescription)
+      })
+      
+      
+      avgTreeLifespan <- 95.0577864 #years
+      totalRunoffAvoidedPerYear <- 174.1836269
+      runoffIncrease <- round( totalRunoffAvoidedPerYear - ( updateRunoff()/avgTreeLifespan ), 2)
+      
+      #Description of Stormwater Runoff Avoided
+      output$RunoffDescription <- renderText({
+        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem helped prevent 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
+                                   runoffIncrease, " gallons.")
+        HTML(runoffDescription)
       })
     }
   )
