@@ -65,7 +65,6 @@ ui <- fluidPage(
     column(4,
            tags$h4("Stormwater Runoff Avioded"),
            htmlOutput(outputId = "RunoffDescription")
-           #tags$p("Description of Stormwater Runoff Avoided")
            ),
     column(4,
            tags$h4("Particulate Matter Removed"),
@@ -73,7 +72,8 @@ ui <- fluidPage(
            ),
     column(4,
            tags$h4("Oxygen Produced"),
-           tags$p("Description of Carbon Sequestered")
+           htmlOutput(outputId = "CO2Description")
+           #tags$p("Description of Carbon Sequestered")
            )
   ),
   
@@ -227,17 +227,33 @@ server <- function(input, output, session){
                              round(rateOfDeathIncrease^100, 6), " times.")
         HTML(PMdescription)
       })
+    
       
-      
+      #Description of Stormwater Runoff Avoided
       avgTreeLifespan <- 95.0577864 #years
       totalRunoffAvoidedPerYear <- 174.1836269
       runoffIncrease <- round( totalRunoffAvoidedPerYear - ( updateRunoff()/avgTreeLifespan ), 2)
       
-      #Description of Stormwater Runoff Avoided
       output$RunoffDescription <- renderText({
-        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem helped prevent 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
+        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
                                    runoffIncrease, " gallons.")
         HTML(runoffDescription)
+      })
+      
+      
+      #Description of Oxygen Produced
+      molecularMassCO2 <- 44.0095 #grams per mole
+      molecularMassO2 <- 31.9988 #grams per mol
+      ratioOfMasses <- molecularMassO2/molecularMassCO2
+      
+      maxCarbonSeqesteredPerYear <- 10317.69 #pounds
+      carbonSequesteredDecrease <- maxCarbonSeqesteredPerYear - ( updateCO2()/avgTreeLifespan)
+      oxygenProductionDecrease <- round( carbonSequesteredDecrease*ratioOfMasses, 2)
+      
+      output$CO2Description <- renderText({
+        co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
+                                oxygenProductionDecrease, " less pounds of oxygen are being produced each year.")
+        HTML(co2Description)
       })
     }
   )
