@@ -40,7 +40,8 @@ ui <- fluidPage(
   tags$style(type = "text/css", "html,
              body {width:100%;height:100%}"),
   tags$h1(img(src = "Tree Icon 1.png", width = 60), "Gambier Tree Simulator"),
-  tags$h4("This simulation is based on tree data gathered on Kenyon College grounds. You can change the number of trees and the average size of the trees to see the impact removing trees versus letting them grow has on the ecosystem. The display on the right shows a score for the benefit these trees have to the ecosystem"),
+  tags$h4("This simulation is based on tree data gathered on Kenyon College grounds by the Office of Green Initiatives and David Heithaus. All of these trees in this simulation were real trees on Campus that were removed due to construction."),
+  tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem"),
 
   fluidRow(
     column(6,
@@ -170,8 +171,8 @@ server <- function(input, output, session){
       red <- 200
       green <- floor((200-0)/50*benefit+0)
       hex_strings <- as.hexmode(c(200, green, blue))
-    } else {
-      hex_strings <- as.hexmode(c(0, 0, 0))
+    } else if (benefit < 0){
+      hex_strings <- as.hexmode(c(150, 0, 0))
     }
 
     #Convert RGB values to hexadecimal
@@ -240,8 +241,14 @@ server <- function(input, output, session){
       #Description of PM Removed
       output$PM_Description <- renderText({
       PMdescription <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, the trees in this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by",
-                             "<b>", rateOfDeathIncrease, "</b>", "per year. If no new trees were planted, after 100 years the rate of death would have increased by",
-                             "<b>", round(rateOfDeathIncrease^100, 6), "</b>", "times.")
+                             "<b>", rateOfDeathIncrease, "</b>", "per year",
+                             "<a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3734610/'>[1]</a>.",
+                             "If no new trees were planted, after 100 years the rate of death would have increased by",
+                             "<b>", round(rateOfDeathIncrease^100, 6), "</b>", "times.<p></p>",
+                             "<p><a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4740163/'>More information on pollution and respiraory diesases</a></p>",
+                             "<p><a href='https://blog.ecosia.org/how-trees-reduce-air-pollution-world-environment-day/'>More information on how trees reduce pollution</a></p>",
+                             "<p><a href='https://www.brighthub.com/environment/green-living/articles/61664.aspx'>Plants can reduce pollution too!</a></p>"
+                             )
         HTML(PMdescription)
       })
 
@@ -253,7 +260,9 @@ server <- function(input, output, session){
 
       output$RunoffDescription <- renderText({
         runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
-                                   "<b>", runoffIncrease, "</b>", " gallons.")
+                                   "<b>", runoffIncrease, "</b>", " gallons.<p></p>",
+                                   "<p><a href='https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees prevent flooding</a></p>"
+                                   )
         HTML(runoffDescription)
       })
 
@@ -269,7 +278,9 @@ server <- function(input, output, session){
 
       output$CO2Description <- renderText({
         co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
-                                "<b>", oxygenProductionDecrease, "</b>", " less pounds of oxygen are being produced each year.")
+                                "<b>", oxygenProductionDecrease, "</b>", " less pounds of oxygen are being produced each year.<p></p>",
+                                "<p><a href = 'https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees produce oxygen</a></p>"
+                                )
         HTML(co2Description)
       })
     }
