@@ -153,11 +153,26 @@ server <- function(input, output, session){
     #Bright Green: Red=51=33, Green=209=d1, Blue=51=33
 
     #Equations to calculate color values based on value of benefit (green -> black)
-    red <- floor((51-0)/100*benefit+0)
-    green <- floor((209-0)/100*benefit+0)
-    blue <- floor((51-0)/100*benefit+0)
+    #red <- floor((51-0)/100*benefit+0)
+    #green <- floor((209-0)/100*benefit+0)
+    #blue <- floor((51-0)/100*benefit+0)
 
     #rgb = floor(144708.78*benefit+2263842)
+
+    red <- 0
+    green <- 200
+    blue <- 0
+
+    if (benefit > 50 & benefit <= 100) {
+      red <- floor(400-((200-0)/50*benefit))
+      hex_strings <- as.hexmode(c(red, 200, blue))
+    } else if (benefit >= 0 & benefit <= 50) {
+      red <- 200
+      green <- floor((200-0)/50*benefit+0)
+      hex_strings <- as.hexmode(c(200, green, blue))
+    } else {
+      hex_strings <- as.hexmode(c(0, 0, 0))
+    }
 
     #Convert RGB values to hexadecimal
     hex_strings <- as.hexmode(c(red, green, blue))
