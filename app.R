@@ -225,8 +225,8 @@ server <- function(input, output, session){
       #Description of PM Removed
       output$PM_Description <- renderText({
       PMdescription <- paste("Particulate Matter is a pollutant which primarily comes from the exhaust fumes of vehicles and is associated with increasing mortality. Prior to removing trees, the trees in this ecosystem removed 67.12 oz of Particulate Matter (PM) per year. Because you removed some of these trees, the rate of death in Gambier would increase by",
-                             rateOfDeathIncrease, "per year. If no new trees were planted, after 100 years the rate of death would have increased by",
-                             round(rateOfDeathIncrease^100, 6), " times.")
+                             "<b>", rateOfDeathIncrease, "</b>", "per year. If no new trees were planted, after 100 years the rate of death would have increased by",
+                             "<b>", round(rateOfDeathIncrease^100, 6), "</b>", "times.")
         HTML(PMdescription)
       })
 
@@ -238,7 +238,7 @@ server <- function(input, output, session){
 
       output$RunoffDescription <- renderText({
         runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
-                                   runoffIncrease, " gallons.")
+                                   "<b>", runoffIncrease, "</b>", " gallons.")
         HTML(runoffDescription)
       })
 
@@ -254,7 +254,7 @@ server <- function(input, output, session){
 
       output$CO2Description <- renderText({
         co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
-                                oxygenProductionDecrease, " less pounds of oxygen are being produced each year.")
+                                "<b>", oxygenProductionDecrease, "</b>", " less pounds of oxygen are being produced each year.")
         HTML(co2Description)
       })
     }
