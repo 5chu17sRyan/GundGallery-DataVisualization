@@ -66,7 +66,7 @@ ui <- fluidPage(
   #Detailed data descriptions
   fluidRow(
     column(4,
-           tags$h4("Stormwater Runoff Avioded"),
+           tags$h4("Stormwater Runoff Avoided"),
            htmlOutput(outputId = "RunoffDescription")
            ),
     column(4,
