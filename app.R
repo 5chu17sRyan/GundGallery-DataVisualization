@@ -40,7 +40,7 @@ ui <- fluidPage(
   tags$style(type = "text/css", "html,
              body {width:100%;height:100%}"),
   tags$h1(img(src = "Tree Icon 1.png", width = 60), "Gambier Tree Simulator"),
-  tags$h4("This simulation is based on tree data gathered on Kenyon College grounds by the Office of Green Initiatives and David Heithaus. All of these trees in this simulation were real trees on Campus that were removed due to construction."),
+  tags$h4("This simulation is based on tree data gathered on Kenyon College grounds by the Office of Green Initiatives and David Heithaus. All of the trees in this simulation were real trees on Campus that were removed due to construction."),
   tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem"),
 
   fluidRow(
