@@ -5,9 +5,9 @@ account: schultzryan
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2217728
-bundleId: 3086242
+bundleId: 3087332
 url: https://schultzryan.shinyapps.io/GambierTreeSimulator--B/
-when: 1588258105.75527
+when: 1588276703.61127
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: coordinates.csv|Project Documents
+ignoredFiles: coordinates.csv

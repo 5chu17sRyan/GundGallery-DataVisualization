@@ -87,6 +87,11 @@ ui <- fluidPage(
 #server-----------------
 
 server <- function(input, output, session){
+  TotalRunoffAvoided <-16577.51
+  TotalPm <- 67.12
+  TotalCO2 <- 980776.97
+  totalB <- 462.84
+  benefit <- totalB
 
   greenLeafIcon <- makeIcon(
     iconUrl = "Tree Icon 2.png",
