@@ -5,8 +5,9 @@ account: schultzryan
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2109124
-bundleId: 3007750
+bundleId: 3082548
 url: https://schultzryan.shinyapps.io/gundgallery-datavisualization/
-when: 1586798355.91245
+when: 1588183568.41253
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: coordinates.csv|Project Documents
