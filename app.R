@@ -20,9 +20,10 @@ data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 #Creates a data frame which holds
 #ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs)
 #for each tree
-accessData <- data.frame(data[,c(1,5,7,11,12)])
+accessData <- data.frame(data[,c(1,5,7,11,12,15)])
 data$ID <- as.numeric(data$ID)
-accessData[3,3]
+(accessData[114, 6])
+
 ID = paste(data$ID)
 
 labels <- lapply(seq(nrow(accessData)), function(i) {
@@ -113,22 +114,39 @@ server <- function(input, output, session){
   })
 
   #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
+  
   updateB <- eventReactive(input$map1_marker_click,{
-    totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
-  })
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
+    else
+      totalB <<- totalB
+      })
 
   updateRunoff <- eventReactive(input$map1_marker_click,{
-    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
+    else
+      TotalRunoffAvoided <<- TotalRunoffAvoided
   })
 
   updateCO2 <- eventReactive(input$map1_marker_click,{
-    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
+    else
+      TotalCO2 <<- TotalCO2
   })
 
   updatePM <- eventReactive(input$map1_marker_click,{
-    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
+    else
+      TotalPm <<- TotalPm 
   })
-
+  
+  observeEvent(input$map1_marker_click,{
+    accessData[input$map1_marker_click$id, 6] <<- accessData[input$map1_marker_click$id, 6] + 1
+  }, priority = -1)
+  
   #Removes marker when clicked
   observe(
     leafletProxy("map1") %>%
