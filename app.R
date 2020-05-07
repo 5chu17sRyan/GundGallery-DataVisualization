@@ -15,7 +15,7 @@ benefit <- totalB
 
 data <- read.csv("Tree_data.csv")
 #Creates data frame for latitude and longitude
-data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
+#data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
 #Creates a data frame which holds
 #ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs)
