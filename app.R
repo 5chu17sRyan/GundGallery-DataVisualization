@@ -40,9 +40,9 @@ labels <- lapply(seq(nrow(accessData)), function(i) {
 ui <- fluidPage(
   tags$style(type = "text/css", "html,
              body {width:100%;height:100%}"),
-  tags$h1(img(src = "Tree Icon 1.png", width = 60), "Gambier Tree Simulator"),
+  tags$h1(img(src = "Tree Icon 1.png", width = 100), "Gambier Tree Simulator"),
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds by the Office of Green Initiatives and David Heithaus. All of the trees in this simulation were real trees on Campus that were removed due to construction."),
-  tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem"),
+  tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem."),
 
   fluidRow(
     column(6,
@@ -254,7 +254,7 @@ server <- function(input, output, session){
                              "<a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3734610/'>[1]</a>.",
                              "If no new trees were planted, after 100 years the rate of death would have increased by",
                              "<b>", round(rateOfDeathIncrease^100, 6), "</b>", "times.<p></p>",
-                             "<p><a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4740163/'>More information on pollution and respiraory diesases</a></p>",
+                             "<p><a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4740163/'>More information on pollution and respiratory diseases</a></p>",
                              "<p><a href='https://blog.ecosia.org/how-trees-reduce-air-pollution-world-environment-day/'>More information on how trees reduce pollution</a></p>",
                              "<p><a href='https://www.brighthub.com/environment/green-living/articles/61664.aspx'>Plants can reduce pollution too!</a></p>"
                              )
@@ -268,7 +268,7 @@ server <- function(input, output, session){
       runoffIncrease <- round( totalRunoffAvoidedPerYear - ( updateRunoff()/avgTreeLifespan ), 2)
 
       output$RunoffDescription <- renderText({
-        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
+        runoffDescription <- paste("Because of trees, whenever it rains some rainwater catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly amount of rainfall that could reach the ground and cause flooding in Gambier would increase by",
                                    "<b>", runoffIncrease, "</b>", " gallons.<p></p>",
                                    "<p><a href='https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees prevent flooding</a></p>"
                                    )
@@ -288,7 +288,7 @@ server <- function(input, output, session){
       output$CO2Description <- renderText({
         co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
                                 "<b>", oxygenProductionDecrease, "</b>", " less pounds of oxygen are being produced each year.<p></p>",
-                                "<p><a href = 'https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees produce oxygen</a></p>"
+                                "<p><a href = 'https://sciencing.com/trees-turn-carbon-dioxide-oxygen-10034022.html'>More information on how trees produce oxygen</a></p>"
                                 )
         HTML(co2Description)
       })
