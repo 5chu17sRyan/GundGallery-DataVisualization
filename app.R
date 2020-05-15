@@ -15,14 +15,15 @@ benefit <- totalB
 
 data <- read.csv("Tree_data.csv")
 #Creates data frame for latitude and longitude
-data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
+#data.SP <- SpatialPointsDataFrame(data[, c(13,14)], data[, -c(13,14)])
 
 #Creates a data frame which holds
 #ID, Total Benefit ($), Runoff Avoided (gal), Particulate Matter Removed (oz), Lifetime CO2 equivalent of carbon stored (lbs)
 #for each tree
-accessData <- data.frame(data[,c(1,5,7,11,12)])
+accessData <- data.frame(data[,c(1,5,7,11,12,15)])
 data$ID <- as.numeric(data$ID)
-accessData[3,3]
+(accessData[114, 6])
+
 ID = paste(data$ID)
 
 labels <- lapply(seq(nrow(accessData)), function(i) {
@@ -39,9 +40,9 @@ labels <- lapply(seq(nrow(accessData)), function(i) {
 ui <- fluidPage(
   tags$style(type = "text/css", "html,
              body {width:100%;height:100%}"),
-  tags$h1(img(src = "Tree Icon 1.png", width = 60), "Gambier Tree Simulator"),
+  tags$h1(img(src = "Tree Icon 1.png", width = 100), "Gambier Tree Simulator"),
   tags$h4("This simulation is based on tree data gathered on Kenyon College grounds by the Office of Green Initiatives and David Heithaus. All of the trees in this simulation were real trees on Campus that were removed due to construction."),
-  tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem"),
+  tags$h4("Click on the trees to remove them from the environment. The display on the right shows a score for the benefit these trees have to the ecosystem."),
 
   fluidRow(
     column(6,
@@ -87,6 +88,11 @@ ui <- fluidPage(
 #server-----------------
 
 server <- function(input, output, session){
+  TotalRunoffAvoided <-16577.51
+  TotalPm <- 67.12
+  TotalCO2 <- 980776.97
+  totalB <- 462.84
+  benefit <- totalB
 
   greenLeafIcon <- makeIcon(
     iconUrl = "Tree Icon 2.png",
@@ -113,21 +119,38 @@ server <- function(input, output, session){
   })
 
   #Reactions to clicks on map markers, Recalcualtes tree benefits by subtracting clicked data point
+
   updateB <- eventReactive(input$map1_marker_click,{
-    totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
-  })
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      totalB <<- totalB - accessData[input$map1_marker_click$id, 2]
+    else
+      totalB <<- totalB
+      })
 
   updateRunoff <- eventReactive(input$map1_marker_click,{
-    TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalRunoffAvoided <<- TotalRunoffAvoided - accessData[input$map1_marker_click$id, 3]
+    else
+      TotalRunoffAvoided <<- TotalRunoffAvoided
   })
 
   updateCO2 <- eventReactive(input$map1_marker_click,{
-    TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalCO2 <<- TotalCO2 - accessData[input$map1_marker_click$id, 5]
+    else
+      TotalCO2 <<- TotalCO2
   })
 
   updatePM <- eventReactive(input$map1_marker_click,{
-    TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
+    if(accessData[input$map1_marker_click$id, 6] == 0)
+      TotalPm <<- TotalPm - accessData[input$map1_marker_click$id, 4]
+    else
+      TotalPm <<- TotalPm
   })
+
+  observeEvent(input$map1_marker_click,{
+    accessData[input$map1_marker_click$id, 6] <<- accessData[input$map1_marker_click$id, 6] + 1
+  }, priority = -1)
 
   #Removes marker when clicked
   observe(
@@ -145,20 +168,6 @@ server <- function(input, output, session){
 
   #Make donut chart
   draw_plot <- function(donut_data, benefit){
-
-    #define benefit again
-
-    #Bright Cardinal: Red=255=ff, Green=37=25, Blue=56=38
-    #Black: Red=0=00. Green=0=00, Blue=0=00
-    #Forest Green: Red=34=22, Green=139=8b, Blue=34=22
-    #Bright Green: Red=51=33, Green=209=d1, Blue=51=33
-
-    #Equations to calculate color values based on value of benefit (green -> black)
-    #red <- floor((51-0)/100*benefit+0)
-    #green <- floor((209-0)/100*benefit+0)
-    #blue <- floor((51-0)/100*benefit+0)
-
-    #rgb = floor(144708.78*benefit+2263842)
 
     red <- 0
     green <- 200
@@ -245,7 +254,7 @@ server <- function(input, output, session){
                              "<a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3734610/'>[1]</a>.",
                              "If no new trees were planted, after 100 years the rate of death would have increased by",
                              "<b>", round(rateOfDeathIncrease^100, 6), "</b>", "times.<p></p>",
-                             "<p><a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4740163/'>More information on pollution and respiraory diesases</a></p>",
+                             "<p><a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4740163/'>More information on pollution and respiratory diseases</a></p>",
                              "<p><a href='https://blog.ecosia.org/how-trees-reduce-air-pollution-world-environment-day/'>More information on how trees reduce pollution</a></p>",
                              "<p><a href='https://www.brighthub.com/environment/green-living/articles/61664.aspx'>Plants can reduce pollution too!</a></p>"
                              )
@@ -259,7 +268,7 @@ server <- function(input, output, session){
       runoffIncrease <- round( totalRunoffAvoidedPerYear - ( updateRunoff()/avgTreeLifespan ), 2)
 
       output$RunoffDescription <- renderText({
-        runoffDescription <- paste("Because of trees, whenever it rains some rain water catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly ammount of rainfall that could reach the ground and cause flodding in Gambier would increase by",
+        runoffDescription <- paste("Because of trees, whenever it rains some rainwater catches on the trees' leaves. This water would end up evaporating before it ever reached the ground, preventing flooding. Prior to removing trees, the trees in this ecosystem prevented 174.18 gallons of stormwater runoff a year. Because you removed some of these trees, the yearly amount of rainfall that could reach the ground and cause flooding in Gambier would increase by",
                                    "<b>", runoffIncrease, "</b>", " gallons.<p></p>",
                                    "<p><a href='https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees prevent flooding</a></p>"
                                    )
@@ -279,7 +288,7 @@ server <- function(input, output, session){
       output$CO2Description <- renderText({
         co2Description <- paste("Through photosynthesis, trees can convert carbon dioxide into oxygen. Prior to removing trees, the trees in this ecosystem produced 7,501.87 pounds of oxygen per year. Because you removed some of these trees, ",
                                 "<b>", oxygenProductionDecrease, "</b>", " less pounds of oxygen are being produced each year.<p></p>",
-                                "<p><a href = 'https://www.charteredforesters.org/2017/06/trees-can-reduce-floods/'>More information on how trees produce oxygen</a></p>"
+                                "<p><a href = 'https://sciencing.com/trees-turn-carbon-dioxide-oxygen-10034022.html'>More information on how trees produce oxygen</a></p>"
                                 )
         HTML(co2Description)
       })
